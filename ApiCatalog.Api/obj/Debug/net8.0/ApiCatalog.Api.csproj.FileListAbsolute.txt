@@ -140,3 +140,12 @@
 /home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Api/obj/Debug/net8.0/ApiCatalog.Api.pdb
 /home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Api/obj/Debug/net8.0/ApiCatalog.Api.genruntimeconfig.cache
 /home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Api/obj/Debug/net8.0/ref/ApiCatalog.Api.dll
+/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Api/bin/Debug/net8.0/BCrypt.Net-Next.dll
+/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Api/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Api/bin/Debug/net8.0/Microsoft.IdentityModel.Abstractions.dll
+/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Api/bin/Debug/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Api/bin/Debug/net8.0/Microsoft.IdentityModel.Logging.dll
+/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Api/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.dll
+/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Api/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Api/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
+/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Api/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll

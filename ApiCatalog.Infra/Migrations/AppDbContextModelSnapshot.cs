@@ -39,6 +39,34 @@ namespace ApiCatalog.Infra.Migrations
 
                     b.ToTable("Products");
                 });
+
+            modelBuilder.Entity("ApiCatalog.Domain.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Cpf")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("RolePermissoes")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
 #pragma warning restore 612, 618
         }
     }
