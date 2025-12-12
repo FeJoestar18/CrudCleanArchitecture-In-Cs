@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../buildMultiTargeting/ApiCatalog.Api.props" />
+</Project>

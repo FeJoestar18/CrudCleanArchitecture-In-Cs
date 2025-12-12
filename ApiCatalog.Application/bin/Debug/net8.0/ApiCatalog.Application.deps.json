@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "ApiCatalog.Application/1.0.0": {
+        "dependencies": {
+          "ApiCatalog.Domain": "1.0.0"
+        },
+        "runtime": {
+          "ApiCatalog.Application.dll": {}
+        }
+      },
+      "ApiCatalog.Domain/1.0.0": {
+        "runtime": {
+          "ApiCatalog.Domain.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ApiCatalog.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ApiCatalog.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
