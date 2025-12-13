@@ -1,5 +1,3 @@
-using ApiCatalog.Domain.Enums;
-
 namespace ApiCatalog.Domain.Entities;
 
 public class User
@@ -9,5 +7,6 @@ public class User
     public int Cpf { get; set; }
     public string? Email { get; set; }
     public string? PasswordHash { get; set; }
-    public RolePermissoes RolePermissoes { get; set; } = RolePermissoes.Usuario;
+    public int RoleId { get; set; }
+    public Role? Role { get; set; }
 }

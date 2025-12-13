@@ -1,0 +1,230 @@
+### Catálogo de Produtos - Sistema de Permissões Hierárquico
+
+### ===== REGISTRO E LOGIN =====
+
+### 1. Registrar Admin
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123",
+  "cpf": 11111111111,
+  "email": "admin@email.com",
+  "role": "Admin"
+}
+
+### 2. Registrar Funcionário
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "funcionario",
+  "password": "func123",
+  "cpf": 22222222222,
+  "email": "funcionario@email.com",
+  "role": "Funcionario"
+}
+
+### 3. Registrar Usuário
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "usuario",
+  "password": "user123",
+  "cpf": 33333333333,
+  "email": "usuario@email.com",
+  "role": "Usuario"
+}
+
+### 4. Login Admin
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@email.com",
+  "password": "admin123"
+}
+
+### 5. Login Funcionário
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "funcionario@email.com",
+  "password": "func123"
+}
+
+### 6. Login Usuário
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "usuario@email.com",
+  "password": "user123"
+}
+
+### ===== PRODUTOS (CRUD) =====
+
+### 7. Listar todos os produtos (Todos podem ver)
+GET http://localhost:5000/api/product
+Authorization: Bearer SEU_TOKEN_AQUI
+
+### 8. Buscar produto por ID
+GET http://localhost:5000/api/product/1
+Authorization: Bearer SEU_TOKEN_AQUI
+
+### 9. Criar produto (Funcionário ou Admin)
+# ✓ Funcionário pode criar
+# ✓ Admin pode criar
+# ✗ Usuário NÃO pode criar
+POST http://localhost:5000/api/product
+Content-Type: application/json
+Authorization: Bearer TOKEN_FUNCIONARIO_OU_ADMIN
+
+{
+  "name": "Notebook Dell",
+  "description": "Notebook Dell Inspiron 15",
+  "price": 3500.00,
+  "stock": 10
+}
+
+### 10. Criar mais produtos de exemplo
+POST http://localhost:5000/api/product
+Content-Type: application/json
+Authorization: Bearer TOKEN_FUNCIONARIO_OU_ADMIN
+
+{
+  "name": "Mouse Logitech",
+  "description": "Mouse sem fio",
+  "price": 89.90,
+  "stock": 50
+}
+
+###
+POST http://localhost:5000/api/product
+Content-Type: application/json
+Authorization: Bearer TOKEN_FUNCIONARIO_OU_ADMIN
+
+{
+  "name": "Teclado Mecânico",
+  "description": "Teclado mecânico RGB",
+  "price": 299.00,
+  "stock": 25
+}
+
+### 11. Atualizar produto (Funcionário ou Admin)
+# ✓ Funcionário pode editar
+# ✓ Admin pode editar
+# ✗ Usuário NÃO pode editar
+PUT http://localhost:5000/api/product/1
+Content-Type: application/json
+Authorization: Bearer TOKEN_FUNCIONARIO_OU_ADMIN
+
+{
+  "name": "Notebook Dell Atualizado",
+  "price": 3200.00,
+  "stock": 15
+}
+
+### 12. Deletar produto como Funcionário (Solicita aprovação)
+# Funcionário: marca como "pendente de deleção"
+DELETE http://localhost:5000/api/product/2
+Authorization: Bearer TOKEN_FUNCIONARIO
+
+### 13. Deletar produto como Admin (Deleta imediatamente)
+# Admin: deleta sem precisar de aprovação
+DELETE http://localhost:5000/api/product/3
+Authorization: Bearer TOKEN_ADMIN
+
+### ===== APROVAÇÃO DE DELEÇÃO (APENAS ADMIN) =====
+
+### 14. Listar produtos pendentes de deleção (Apenas Admin)
+GET http://localhost:5000/api/product/pending-deletion
+Authorization: Bearer TOKEN_ADMIN
+
+### 15. Aprovar deleção de produto (Apenas Admin)
+POST http://localhost:5000/api/product/2/approve-deletion
+Authorization: Bearer TOKEN_ADMIN
+
+### 16. Rejeitar deleção de produto (Apenas Admin)
+POST http://localhost:5000/api/product/2/reject-deletion
+Authorization: Bearer TOKEN_ADMIN
+
+### ===== COMPRA DE PRODUTOS (USUÁRIO) =====
+
+### 17. Usuário adquire produto
+# ✓ Todos os níveis podem comprar
+POST http://localhost:5000/api/product/purchase
+Content-Type: application/json
+Authorization: Bearer TOKEN_USUARIO
+
+{
+  "productId": 1,
+  "quantity": 2
+}
+
+### 18. Comprar mais produtos
+POST http://localhost:5000/api/product/purchase
+Content-Type: application/json
+Authorization: Bearer TOKEN_USUARIO
+
+{
+  "productId": 2,
+  "quantity": 1
+}
+
+### 19. Listar meus produtos adquiridos
+GET http://localhost:5000/api/product/my-products
+Authorization: Bearer TOKEN_USUARIO
+
+### ===== RESUMO DE PERMISSÕES =====
+
+###
+### 📊 MATRIZ DE PERMISSÕES:
+###
+### Ação                    | Usuario | Funcionario | Admin
+### -------------------------|---------|-------------|-------
+### Listar produtos         |    ✓    |      ✓      |   ✓
+### Ver produto             |    ✓    |      ✓      |   ✓
+### Criar produto           |    ✗    |      ✓      |   ✓
+### Editar produto          |    ✗    |      ✓      |   ✓
+### Deletar produto         |    ✗    |  ✓ (pend.) |   ✓
+### Aprovar/Rejeitar del.   |    ✗    |      ✗      |   ✓
+### Ver pendentes deleção   |    ✗    |      ✗      |   ✓
+### Comprar produto         |    ✓    |      ✓      |   ✓
+### Ver minhas compras      |    ✓    |      ✓      |   ✓
+###
+
+### ===== FLUXO DE DELEÇÃO COM APROVAÇÃO =====
+
+### Cenário 1: Funcionário solicita, Admin aprova
+# 1. Funcionário solicita deleção
+DELETE http://localhost:5000/api/product/1
+Authorization: Bearer TOKEN_FUNCIONARIO
+
+# 2. Admin visualiza pendências
+GET http://localhost:5000/api/product/pending-deletion
+Authorization: Bearer TOKEN_ADMIN
+
+# 3. Admin aprova
+POST http://localhost:5000/api/product/1/approve-deletion
+Authorization: Bearer TOKEN_ADMIN
+
+### Cenário 2: Funcionário solicita, Admin rejeita
+# 1. Funcionário solicita deleção
+DELETE http://localhost:5000/api/product/2
+Authorization: Bearer TOKEN_FUNCIONARIO
+
+# 2. Admin rejeita (produto volta ao normal)
+POST http://localhost:5000/api/product/2/reject-deletion
+Authorization: Bearer TOKEN_ADMIN
+
+### Cenário 3: Admin deleta diretamente (sem aprovação)
+DELETE http://localhost:5000/api/product/3
+Authorization: Bearer TOKEN_ADMIN
+# ✓ Produto deletado imediatamente
+
+###
+

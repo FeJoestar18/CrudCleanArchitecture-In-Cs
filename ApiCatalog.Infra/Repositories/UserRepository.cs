@@ -9,7 +9,9 @@ public class UserRepository(AppDbContext context) : IUserRepository
 {
     public async Task<User?> GetByUsernameAsync(string username)
     {
-        return await context.Users.FirstOrDefaultAsync(u => u.Username == username);
+        return await context.Users
+            .Include(u => u.Role)
+            .FirstOrDefaultAsync(u => u.Username == username || u.Email == username);
     }
     
     public async Task AddAsync(User user)

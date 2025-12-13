@@ -1,7 +1,6 @@
 using ApiCatalog.Application.DTOs;
 using ApiCatalog.Domain.Interfaces;
 using ApiCatalog.Domain.Entities;
-using ApiCatalog.Domain.Enums;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -10,18 +9,35 @@ using Microsoft.Extensions.Configuration;
 
 namespace ApiCatalog.Application.Services;
 
-public class AuthService(IUserRepository userRepository, IConfiguration configuration)
+public class AuthService
 {
+    private readonly IUserRepository _userRepository;
+    private readonly IRoleRepository _roleRepository;
+    private readonly IConfiguration _configuration;
+
+    public AuthService(IUserRepository userRepository, IRoleRepository roleRepository, IConfiguration configuration)
+    {
+        _userRepository = userRepository;
+        _roleRepository = roleRepository;
+        _configuration = configuration;
+    }
+
     public async Task<bool> RegisterAsync(RegisterDto dto)
     {
-        var existing = await userRepository.GetByUsernameAsync(dto.Username);
-        if (existing != null) return false; // já existe
+        var existing = await _userRepository.GetByUsernameAsync(dto.Username);
+        if (existing != null) return false;
 
-        var rolePermissoes = RolePermissoes.Usuario; // padrão
-        if (!string.IsNullOrEmpty(dto.Role) && Enum.TryParse<RolePermissoes>(dto.Role, true, out var parsedRole))
+        // Buscar role por nome ou usar "Usuario" como padrão
+        Role? role = null;
+        if (!string.IsNullOrEmpty(dto.Role))
         {
-            rolePermissoes = parsedRole;
+            role = await _roleRepository.GetByNameAsync(dto.Role);
         }
+        
+        // Se não encontrou ou não foi especificado, usar role padrão "Usuario"
+        role ??= await _roleRepository.GetByNameAsync("Usuario");
+        
+        if (role == null) return false; // Role padrão deve existir
 
         var user = new User
         {
@@ -29,35 +45,35 @@ public class AuthService(IUserRepository userRepository, IConfiguration configur
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
             Cpf = dto.Cpf,
             Email = dto.Email,
-            RolePermissoes = rolePermissoes
+            RoleId = role.Id
         };
 
-        await userRepository.AddAsync(user);
-        await userRepository.SaveChangesAsync();
+        await _userRepository.AddAsync(user);
+        await _userRepository.SaveChangesAsync();
         return true;
     }
 
     public async Task<string?> LoginAsync(LoginDto dto)
     {
-        var user = await userRepository.GetByUsernameAsync(dto.Username);
-        if (user == null) return null;
+        var user = await _userRepository.GetByUsernameAsync(dto.Email);
+        if (user == null || user.Role == null) return null;
 
         var valid = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
         if (!valid) return null;
-
-        // Claims
+        
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, user.Username ?? string.Empty),
-            new Claim(ClaimTypes.Role, user.RolePermissoes.ToString())
+            new Claim(ClaimTypes.Name, user.Email ?? string.Empty),
+            new Claim(ClaimTypes.Role, user.Role.Name),
+            new Claim("role_level", user.Role.Level.ToString())
         };
 
-        var key = Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!);
+        var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!);
         var creds = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer: configuration["Jwt:Issuer"],
-            audience: configuration["Jwt:Audience"],
+            issuer: _configuration["Jwt:Issuer"],
+            audience: _configuration["Jwt:Audience"],
             claims: claims,
             expires: DateTime.UtcNow.AddHours(8),
             signingCredentials: creds

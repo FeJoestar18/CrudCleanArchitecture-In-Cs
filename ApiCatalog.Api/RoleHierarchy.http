@@ -1,0 +1,138 @@
+### Teste do Sistema de Hierarquia de Roles
+
+### 1. Registrar usuário comum (Usuario - Level 1)
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "usuario1",
+  "password": "senha123",
+  "cpf": 12345678901,
+  "email": "usuario1@email.com",
+  "role": "Usuario"
+}
+
+### 2. Registrar funcionário (Funcionario - Level 2)
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "funcionario1",
+  "password": "senha123",
+  "cpf": 12345678902,
+  "email": "funcionario1@email.com",
+  "role": "Funcionario"
+}
+
+### 3. Registrar admin (Admin - Level 3)
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "admin1",
+  "password": "senha123",
+  "cpf": 12345678903,
+  "email": "admin1@email.com",
+  "role": "Admin"
+}
+
+### 4. Login como Usuario
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "usuario1@email.com",
+  "password": "senha123"
+}
+
+### 5. Login como Funcionario
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "funcionario1@email.com",
+  "password": "senha123"
+}
+
+### 6. Login como Admin
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin1@email.com",
+  "password": "senha123"
+}
+
+###
+### COPIE O TOKEN DE CADA LOGIN E USE NOS TESTES ABAIXO
+###
+
+### 7. Listar produtos (UsuarioOrAbove - Level 1+)
+GET http://localhost:5000/api/product
+Authorization: Bearer SEU_TOKEN_AQUI
+
+### 8. Criar produto (FuncionarioOrAbove - Level 2+)
+# Vai FALHAR com token de Usuario
+# Vai FUNCIONAR com token de Funcionario ou Admin
+POST http://localhost:5000/api/product
+Content-Type: application/json
+Authorization: Bearer SEU_TOKEN_AQUI
+
+{
+  "name": "Produto Teste",
+  "price": 100.00
+}
+
+### 9. Deletar produto (AdminOnly - Level 3)
+# Vai FALHAR com token de Usuario ou Funcionario
+# Vai FUNCIONAR apenas com token de Admin
+DELETE http://localhost:5000/api/product/1
+Authorization: Bearer SEU_TOKEN_AQUI
+
+### 10. Listar todos os roles (FuncionarioOrAbove - Level 2+)
+GET http://localhost:5000/api/role
+Authorization: Bearer SEU_TOKEN_ADMIN
+
+### 11. Criar novo role (AdminOnly - Level 3)
+# Exemplo: criar role "Gerente" com level 4
+POST http://localhost:5000/api/role
+Content-Type: application/json
+Authorization: Bearer SEU_TOKEN_ADMIN
+
+{
+  "name": "Gerente",
+  "level": 4,
+  "parentRoleId": 3
+}
+
+### 12. Criar novo role "Supervisor" (Level 2.5 entre Funcionario e Admin)
+POST http://localhost:5000/api/role
+Content-Type: application/json
+Authorization: Bearer SEU_TOKEN_ADMIN
+
+{
+  "name": "Supervisor",
+  "level": 2,
+  "parentRoleId": 2
+}
+
+###
+### TESTE DE HIERARQUIA
+###
+### Usuario (Level 1):
+###   ✓ Pode: GET /api/product (UsuarioOrAbove)
+###   ✗ Não pode: POST /api/product (FuncionarioOrAbove)
+###   ✗ Não pode: DELETE /api/product/1 (AdminOnly)
+###   ✗ Não pode: GET /api/role (FuncionarioOrAbove)
+###
+### Funcionario (Level 2):
+###   ✓ Pode: GET /api/product (UsuarioOrAbove)
+###   ✓ Pode: POST /api/product (FuncionarioOrAbove)
+###   ✗ Não pode: DELETE /api/product/1 (AdminOnly)
+###   ✓ Pode: GET /api/role (FuncionarioOrAbove)
+###   ✗ Não pode: POST /api/role (AdminOnly)
+###
+### Admin (Level 3):
+###   ✓ Pode: TUDO (tem nível máximo)
+###
+

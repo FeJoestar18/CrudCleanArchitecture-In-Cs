@@ -6,6 +6,7 @@ using ApiCatalog.Infra.Context;
 using ApiCatalog.Infra.Repositories;
 using ApiCatalog.Domain.Interfaces;
 using ApiCatalog.Application.Services;
+using ApiCatalog.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,9 +20,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
 
-// --- DI: repository e serviço de autenticação
+// --- DI: repositories e serviços
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<RoleService>();
+builder.Services.AddScoped<ProductService>();
 
 // --- Jwt auth
 var key = builder.Configuration["Jwt:Key"];
@@ -49,7 +54,8 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-builder.Services.AddAuthorization();
+// --- Custom Authorization with policies
+builder.Services.AddCustomAuthorization();
 
 builder.Services.AddControllers();
 
