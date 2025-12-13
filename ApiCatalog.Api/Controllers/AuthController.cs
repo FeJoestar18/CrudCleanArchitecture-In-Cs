@@ -66,7 +66,7 @@ public class AuthController(AuthService auth) : ControllerBase
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        return Ok(new { message = "Logout realizado com sucesso." });
+        return Ok(new { message = Messages.Logout.LogoutSuccessful });
     }
 
     [Authorize]

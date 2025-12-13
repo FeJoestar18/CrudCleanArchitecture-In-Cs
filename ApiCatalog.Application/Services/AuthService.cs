@@ -71,10 +71,8 @@ public class AuthService(IUserRepository userRepository, IRoleRepository roleRep
     
     public async Task<User?> GetUserByEmailOrUsernameAsync(string emailOrUsername)
     {
-        var byEmail = await userRepository.GetByEmailAsync(emailOrUsername);
-        if (byEmail != null) return byEmail;
+        var user = await userRepository.GetByEmailAsync(emailOrUsername);
+        if (user != null) return user;
         return await userRepository.GetByUsernameAsync(emailOrUsername);
     }
-    
-    
 }

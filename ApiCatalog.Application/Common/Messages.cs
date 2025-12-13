@@ -10,6 +10,11 @@ public static class Messages
         public const string UserNotFound = "Usuário não encontrado";
     }
     
+    public static class Logout 
+    {
+        public const string LogoutSuccessful = "Logout realizado com sucesso";
+    }
+    
     public static class Products
     {
         public const string ProductNotFound = "Produto não encontrado";

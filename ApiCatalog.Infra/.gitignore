@@ -1,0 +1,34 @@
+.env
+
+## Build results
+bin/
+obj/
+
+## Visual Studio
+.vs/
+*.user
+*.suo
+*.cache
+*.log
+
+## Rider / VS Code
+.idea/
+.vscode/
+
+## ASP.NET
+*.pdb
+*.dll
+*.exe
+*.app
+*.deps.json
+*.runtimeconfig.json
+
+## NuGet
+*.nupkg
+*.snupkg
+.nuget/
+
+## Others
+*.cache
+*.tmp
+*.bak
