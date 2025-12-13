@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApiCatalog.Infra.Repositories;
 
-public class UserRepository(AppDbContext context) : IUserRepository
+public class UserRepository(AppDbContext context, IUserRepository? userRepositoryImplementation) : IUserRepository
 {
+    private readonly IUserRepository? _userRepositoryImplementation = userRepositoryImplementation;
+
     public async Task<User?> GetByUsernameAsync(string username)
     {
         return await context.Users
@@ -24,4 +26,8 @@ public class UserRepository(AppDbContext context) : IUserRepository
         await context.SaveChangesAsync();
     }
 
+    public Task<User?> GetByEmailAsync(string emailOrUsername)
+    {
+        return _userRepositoryImplementation.GetByEmailAsync(emailOrUsername);
+    }
 }

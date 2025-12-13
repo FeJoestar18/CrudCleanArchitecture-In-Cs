@@ -7,6 +7,8 @@ using ApiCatalog.Infra.Repositories;
 using ApiCatalog.Domain.Interfaces;
 using ApiCatalog.Application.Services;
 using ApiCatalog.Api.Extensions;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.CookiePolicy;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,13 +22,23 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
 
-// --- DI: repositories e serviços
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<RoleService>();
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/api/Auth/login";
+        options.LogoutPath = "/api/Auth/logout";
+        options.Cookie.Name = "AuthCookie";
+        options.SlidingExpiration = true;
+        options.ExpireTimeSpan = TimeSpan.FromHours(8);
+    });
+
+builder.Services.AddAuthorization();
 
 // --- Jwt auth
 var key = builder.Configuration["Jwt:Key"];
@@ -54,7 +66,6 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-// --- Custom Authorization with policies
 builder.Services.AddCustomAuthorization();
 
 builder.Services.AddControllers();

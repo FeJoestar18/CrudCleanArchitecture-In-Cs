@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiCatalog.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c13033f574e4876a99fc1f308fe9334c91dee8e6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8d009a25cd63f8fa546e185517cd9649a8e36899")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiCatalog.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiCatalog.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

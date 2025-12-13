@@ -68,4 +68,13 @@ public class AuthService(IUserRepository userRepository, IRoleRepository roleRep
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+    
+    public async Task<User?> GetUserByEmailOrUsernameAsync(string emailOrUsername)
+    {
+        var byEmail = await userRepository.GetByEmailAsync(emailOrUsername);
+        if (byEmail != null) return byEmail;
+        return await userRepository.GetByUsernameAsync(emailOrUsername);
+    }
+    
+    
 }
