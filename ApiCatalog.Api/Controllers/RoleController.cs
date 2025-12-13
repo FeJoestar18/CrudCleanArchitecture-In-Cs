@@ -1,6 +1,7 @@
 using ApiCatalog.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ApiCatalog.Application.Common;
 
 namespace ApiCatalog.Api.Controllers;
 
@@ -28,7 +29,7 @@ public class RoleController(RoleService roleService) : ControllerBase
             return Forbid();
         }
 
-        return Ok(new { message = "Role criado com sucesso" });
+        return Ok(new { message = Messages.Roles.RoleCreated });
     }
 }
 

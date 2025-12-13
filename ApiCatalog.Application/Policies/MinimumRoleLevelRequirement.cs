@@ -2,13 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ApiCatalog.Application.Policies;
 
-public class MinimumRoleLevelRequirement : IAuthorizationRequirement
+public class MinimumRoleLevelRequirement(int minimumLevel) : IAuthorizationRequirement
 {
-    public int MinimumLevel { get; }
-    
-    public MinimumRoleLevelRequirement(int minimumLevel)
-    {
-        MinimumLevel = minimumLevel;
-    }
+    public int MinimumLevel { get; } = minimumLevel;
 }
 

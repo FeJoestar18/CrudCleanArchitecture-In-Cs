@@ -2,6 +2,7 @@ using ApiCatalog.Application.DTOs;
 using ApiCatalog.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ApiCatalog.Application.Common;
 
 namespace ApiCatalog.Api.Controllers;
 
@@ -17,9 +18,6 @@ public class ProductController : ControllerBase
         _productService = productService;
     }
 
-    /// <summary>
-    /// Lista todos os produtos (todos podem visualizar)
-    /// </summary>
     [HttpGet]
     [Authorize(Policy = "UsuarioOrAbove")]
     public async Task<IActionResult> GetAll()
@@ -28,24 +26,18 @@ public class ProductController : ControllerBase
         return Ok(products);
     }
 
-    /// <summary>
-    /// Busca produto por ID
-    /// </summary>
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     [Authorize(Policy = "UsuarioOrAbove")]
     public async Task<IActionResult> GetById(int id)
     {
         var product = await _productService.GetProductByIdAsync(id);
         if (product == null)
         {
-            return NotFound(new { message = "Produto não encontrado" });
+            return NotFound(new { message = Messages.Products.ProductNotFound });
         }
         return Ok(product);
     }
 
-    /// <summary>
-    /// Cria produto (Funcionario e Admin)
-    /// </summary>
     [HttpPost]
     [Authorize(Policy = "FuncionarioOrAbove")]
     public async Task<IActionResult> Create([FromBody] CreateProductDto dto)
@@ -60,10 +52,7 @@ public class ProductController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = product!.Id }, product);
     }
 
-    /// <summary>
-    /// Atualiza produto (Funcionario e Admin)
-    /// </summary>
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     [Authorize(Policy = "FuncionarioOrAbove")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateProductDto dto)
     {
@@ -77,12 +66,7 @@ public class ProductController : ControllerBase
         return Ok(new { message });
     }
 
-    /// <summary>
-    /// Deleta produto
-    /// - Admin: deleta imediatamente
-    /// - Funcionario: solicita aprovação
-    /// </summary>
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     [Authorize(Policy = "FuncionarioOrAbove")]
     public async Task<IActionResult> Delete(int id)
     {
@@ -96,14 +80,11 @@ public class ProductController : ControllerBase
         return Ok(new { message });
     }
 
-    /// <summary>
-    /// Lista produtos pendentes de deleção (apenas Admin)
-    /// </summary>
     [HttpGet("pending-deletion")]
     [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> GetPendingDeletion()
     {
-        var (success, message, products) = await _productService.GetPendingDeletionAsync(User);
+        var (success, _, products) = await _productService.GetPendingDeletionAsync(User);
         
         if (!success)
         {
@@ -113,10 +94,7 @@ public class ProductController : ControllerBase
         return Ok(products);
     }
 
-    /// <summary>
-    /// Aprova deleção de produto (apenas Admin)
-    /// </summary>
-    [HttpPost("{id}/approve-deletion")]
+    [HttpPost("{id:int}/approve-deletion")]
     [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> ApproveDeletion(int id)
     {
@@ -130,10 +108,7 @@ public class ProductController : ControllerBase
         return Ok(new { message });
     }
 
-    /// <summary>
-    /// Rejeita deleção de produto (apenas Admin)
-    /// </summary>
-    [HttpPost("{id}/reject-deletion")]
+    [HttpPost("{id:int}/reject-deletion")]
     [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> RejectDeletion(int id)
     {
@@ -147,9 +122,6 @@ public class ProductController : ControllerBase
         return Ok(new { message });
     }
 
-    /// <summary>
-    /// Usuário adquire produto
-    /// </summary>
     [HttpPost("purchase")]
     [Authorize(Policy = "UsuarioOrAbove")]
     public async Task<IActionResult> Purchase([FromBody] PurchaseProductDto dto)
@@ -164,9 +136,6 @@ public class ProductController : ControllerBase
         return Ok(new { message, purchase });
     }
 
-    /// <summary>
-    /// Lista produtos adquiridos pelo usuário logado
-    /// </summary>
     [HttpGet("my-products")]
     [Authorize(Policy = "UsuarioOrAbove")]
     public async Task<IActionResult> GetMyProducts()

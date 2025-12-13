@@ -1,3 +1,4 @@
+using ApiCatalog.Application.Common;
 using ApiCatalog.Application.DTOs;
 using ApiCatalog.Application.Policies;
 using ApiCatalog.Domain.Entities;
@@ -7,30 +8,15 @@ using System.Security.Claims;
 
 namespace ApiCatalog.Application.Services;
 
-public class ProductService
+public class ProductService(
+    IProductRepository productRepository,
+    IUserRepository userRepository,
+    IAuthorizationService authorizationService)
 {
-    private readonly IProductRepository _productRepository;
-    private readonly IUserRepository _userRepository;
-    private readonly IAuthorizationService _authorizationService;
-
-    public ProductService(
-        IProductRepository productRepository, 
-        IUserRepository userRepository,
-        IAuthorizationService authorizationService)
-    {
-        _productRepository = productRepository;
-        _userRepository = userRepository;
-        _authorizationService = authorizationService;
-    }
-
-    /// <summary>
-    /// Lista todos os produtos (todos os níveis podem visualizar)
-    /// </summary>
     public async Task<List<ProductResponseDto>> GetAllProductsAsync(ClaimsPrincipal user)
     {
-        // Verifica nível do usuário para decidir se mostra inativos
         var isAdmin = await IsUserLevelAsync(user, 3);
-        var products = await _productRepository.GetAllAsync(includeInactive: isAdmin);
+        var products = await productRepository.GetAllAsync(includeInactive: isAdmin);
 
         return products.Select(p => new ProductResponseDto(
             p.Id,
@@ -48,12 +34,9 @@ public class ProductService
         )).ToList();
     }
 
-    /// <summary>
-    /// Busca produto por ID
-    /// </summary>
     public async Task<ProductResponseDto?> GetProductByIdAsync(int id)
     {
-        var product = await _productRepository.GetByIdAsync(id);
+        var product = await productRepository.GetByIdAsync(id);
         if (product == null) return null;
 
         return new ProductResponseDto(
@@ -72,14 +55,10 @@ public class ProductService
         );
     }
 
-    /// <summary>
-    /// Cria produto (Funcionario e Admin)
-    /// </summary>
     public async Task<(bool Success, string Message, ProductResponseDto? Product)> CreateProductAsync(
         ClaimsPrincipal user, 
         CreateProductDto dto)
     {
-        // Validar permissão mínima (Funcionario - Level 2)
         if (!await IsUserLevelAsync(user, 2))
         {
             return (false, "Apenas funcionários ou admins podem criar produtos", null);
@@ -101,8 +80,8 @@ public class ProductService
             IsActive = true
         };
 
-        await _productRepository.AddAsync(product);
-        await _productRepository.SaveChangesAsync();
+        await productRepository.AddAsync(product);
+        await productRepository.SaveChangesAsync();
 
         var response = new ProductResponseDto(
             product.Id,
@@ -122,9 +101,6 @@ public class ProductService
         return (true, "Produto criado com sucesso", response);
     }
 
-    /// <summary>
-    /// Atualiza produto (Funcionario e Admin)
-    /// </summary>
     public async Task<(bool Success, string Message)> UpdateProductAsync(
         ClaimsPrincipal user,
         int id,
@@ -136,7 +112,7 @@ public class ProductService
             return (false, "Apenas funcionários ou admins podem editar produtos");
         }
 
-        var product = await _productRepository.GetByIdAsync(id);
+        var product = await productRepository.GetByIdAsync(id);
         if (product == null)
         {
             return (false, "Produto não encontrado");
@@ -163,22 +139,17 @@ public class ProductService
         if (dto.IsActive.HasValue)
             product.IsActive = dto.IsActive.Value;
 
-        await _productRepository.UpdateAsync(product);
-        await _productRepository.SaveChangesAsync();
+        await productRepository.UpdateAsync(product);
+        await productRepository.SaveChangesAsync();
 
         return (true, "Produto atualizado com sucesso");
     }
 
-    /// <summary>
-    /// Deleta produto:
-    /// - Admin: deleta imediatamente
-    /// - Funcionario: marca como pendente de deleção (requer aprovação admin)
-    /// </summary>
     public async Task<(bool Success, string Message)> DeleteProductAsync(
         ClaimsPrincipal user,
         int id)
     {
-        var product = await _productRepository.GetByIdAsync(id);
+        var product = await productRepository.GetByIdAsync(id);
         if (product == null)
         {
             return (false, "Produto não encontrado");
@@ -194,13 +165,11 @@ public class ProductService
 
         if (isAdmin)
         {
-            // Admin deleta imediatamente
-            await _productRepository.DeleteAsync(product);
-            await _productRepository.SaveChangesAsync();
+            await productRepository.DeleteAsync(product);
+            await productRepository.SaveChangesAsync();
             return (true, "Produto deletado com sucesso");
         }
 
-        // Funcionário: marca como pendente
         var currentUser = await GetCurrentUserAsync(user);
         if (currentUser == null)
         {
@@ -211,15 +180,12 @@ public class ProductService
         product.RequestedDeletionByUserId = currentUser.Id;
         product.DeletionRequestedAt = DateTime.UtcNow;
 
-        await _productRepository.UpdateAsync(product);
-        await _productRepository.SaveChangesAsync();
+        await productRepository.UpdateAsync(product);
+        await productRepository.SaveChangesAsync();
 
         return (true, "Solicitação de deleção enviada para aprovação do admin");
     }
 
-    /// <summary>
-    /// Lista produtos pendentes de deleção (apenas Admin)
-    /// </summary>
     public async Task<(bool Success, string Message, List<ProductResponseDto>? Products)> GetPendingDeletionAsync(
         ClaimsPrincipal user)
     {
@@ -228,7 +194,7 @@ public class ProductService
             return (false, "Apenas admins podem visualizar solicitações de deleção", null);
         }
 
-        var products = await _productRepository.GetPendingDeletionAsync();
+        var products = await productRepository.GetPendingDeletionAsync();
         var response = products.Select(p => new ProductResponseDto(
             p.Id,
             p.Name,
@@ -247,9 +213,6 @@ public class ProductService
         return (true, "Produtos pendentes de deleção", response);
     }
 
-    /// <summary>
-    /// Aprova deleção de produto (apenas Admin)
-    /// </summary>
     public async Task<(bool Success, string Message)> ApproveDeletionAsync(
         ClaimsPrincipal user,
         int id)
@@ -259,7 +222,7 @@ public class ProductService
             return (false, "Apenas admins podem aprovar deleções");
         }
 
-        var product = await _productRepository.GetByIdAsync(id);
+        var product = await productRepository.GetByIdAsync(id);
         if (product == null)
         {
             return (false, "Produto não encontrado");
@@ -270,15 +233,12 @@ public class ProductService
             return (false, "Este produto não está pendente de deleção");
         }
 
-        await _productRepository.DeleteAsync(product);
-        await _productRepository.SaveChangesAsync();
+        await productRepository.DeleteAsync(product);
+        await productRepository.SaveChangesAsync();
 
         return (true, "Deleção aprovada e produto removido");
     }
 
-    /// <summary>
-    /// Rejeita deleção de produto (apenas Admin)
-    /// </summary>
     public async Task<(bool Success, string Message)> RejectDeletionAsync(
         ClaimsPrincipal user,
         int id)
@@ -288,7 +248,7 @@ public class ProductService
             return (false, "Apenas admins podem rejeitar deleções");
         }
 
-        var product = await _productRepository.GetByIdAsync(id);
+        var product = await productRepository.GetByIdAsync(id);
         if (product == null)
         {
             return (false, "Produto não encontrado");
@@ -303,15 +263,12 @@ public class ProductService
         product.RequestedDeletionByUserId = null;
         product.DeletionRequestedAt = null;
 
-        await _productRepository.UpdateAsync(product);
-        await _productRepository.SaveChangesAsync();
+        await productRepository.UpdateAsync(product);
+        await productRepository.SaveChangesAsync();
 
         return (true, "Solicitação de deleção rejeitada");
     }
 
-    /// <summary>
-    /// Usuário adquire produto (apenas Usuario - Level 1+)
-    /// </summary>
     public async Task<(bool Success, string Message, UserProductResponseDto? Purchase)> PurchaseProductAsync(
         ClaimsPrincipal user,
         PurchaseProductDto dto)
@@ -319,30 +276,28 @@ public class ProductService
         var currentUser = await GetCurrentUserAsync(user);
         if (currentUser == null)
         {
-            return (false, "Usuário não encontrado", null);
+            return (false, Messages.Auth.UserNotFound, null);
         }
 
-        var product = await _productRepository.GetByIdAsync(dto.ProductId);
+        var product = await productRepository.GetByIdAsync(dto.ProductId);
         if (product == null)
         {
-            return (false, "Produto não encontrado", null);
+            return (false, Messages.Products.ProductNotFound, null);
         }
 
         if (!product.IsActive || product.PendingDeletion)
         {
-            return (false, "Produto não disponível para compra", null);
+            return (false, Messages.Products.ProductUnavailable, null);
         }
 
         if (product.Stock < dto.Quantity)
         {
-            return (false, $"Estoque insuficiente. Disponível: {product.Stock}", null);
+            return (false, string.Format(Messages.Products.InsufficientStock, product.Stock), null);
         }
 
-        // Reduzir estoque
         product.Stock -= dto.Quantity;
-        await _productRepository.UpdateAsync(product);
+        await productRepository.UpdateAsync(product);
 
-        // Criar registro de compra
         var userProduct = new UserProduct
         {
             UserId = currentUser.Id,
@@ -351,8 +306,8 @@ public class ProductService
             PurchasePrice = product.Price
         };
 
-        await _productRepository.AddUserProductAsync(userProduct);
-        await _productRepository.SaveChangesAsync();
+        await productRepository.AddUserProductAsync(userProduct);
+        await productRepository.SaveChangesAsync();
 
         var response = new UserProductResponseDto(
             userProduct.Id,
@@ -362,18 +317,15 @@ public class ProductService
             userProduct.PurchasedAt
         );
 
-        return (true, "Produto adquirido com sucesso", response);
+        return (true, Messages.Products.ProductPurchased, response);
     }
 
-    /// <summary>
-    /// Lista produtos adquiridos pelo usuário
-    /// </summary>
     public async Task<List<UserProductResponseDto>> GetMyProductsAsync(ClaimsPrincipal user)
     {
         var currentUser = await GetCurrentUserAsync(user);
         if (currentUser == null) return new List<UserProductResponseDto>();
 
-        var userProducts = await _productRepository.GetUserProductsAsync(currentUser.Id);
+        var userProducts = await productRepository.GetUserProductsAsync(currentUser.Id);
         
         return userProducts.Select(up => new UserProductResponseDto(
             up.Id,
@@ -384,10 +336,9 @@ public class ProductService
         )).ToList();
     }
 
-    // Métodos auxiliares
     private async Task<bool> IsUserLevelAsync(ClaimsPrincipal user, int requiredLevel)
     {
-        var authResult = await _authorizationService.AuthorizeAsync(
+        var authResult = await authorizationService.AuthorizeAsync(
             user,
             null,
             new MinimumRoleLevelRequirement(requiredLevel)
@@ -400,7 +351,7 @@ public class ProductService
         var email = user.FindFirst(ClaimTypes.Name)?.Value;
         if (string.IsNullOrEmpty(email)) return null;
 
-        return await _userRepository.GetByUsernameAsync(email);
+        return await userRepository.GetByUsernameAsync(email);
     }
 }
 
