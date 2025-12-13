@@ -9,20 +9,13 @@ namespace ApiCatalog.Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class ProductController : ControllerBase
+public class ProductController(ProductService productService) : ControllerBase
 {
-    private readonly ProductService _productService;
-
-    public ProductController(ProductService productService)
-    {
-        _productService = productService;
-    }
-
     [HttpGet]
     [Authorize(Policy = "UsuarioOrAbove")]
     public async Task<IActionResult> GetAll()
     {
-        var products = await _productService.GetAllProductsAsync(User);
+        var products = await productService.GetAllProductsAsync(User);
         return Ok(products);
     }
 
@@ -30,7 +23,7 @@ public class ProductController : ControllerBase
     [Authorize(Policy = "UsuarioOrAbove")]
     public async Task<IActionResult> GetById(int id)
     {
-        var product = await _productService.GetProductByIdAsync(id);
+        var product = await productService.GetProductByIdAsync(id);
         if (product == null)
         {
             return NotFound(new { message = Messages.Products.ProductNotFound });
@@ -42,7 +35,7 @@ public class ProductController : ControllerBase
     [Authorize(Policy = "FuncionarioOrAbove")]
     public async Task<IActionResult> Create([FromBody] CreateProductDto dto)
     {
-        var (success, message, product) = await _productService.CreateProductAsync(User, dto);
+        var (success, message, product) = await productService.CreateProductAsync(User, dto);
         
         if (!success)
         {
@@ -56,7 +49,7 @@ public class ProductController : ControllerBase
     [Authorize(Policy = "FuncionarioOrAbove")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateProductDto dto)
     {
-        var (success, message) = await _productService.UpdateProductAsync(User, id, dto);
+        var (success, message) = await productService.UpdateProductAsync(User, id, dto);
         
         if (!success)
         {
@@ -70,7 +63,7 @@ public class ProductController : ControllerBase
     [Authorize(Policy = "FuncionarioOrAbove")]
     public async Task<IActionResult> Delete(int id)
     {
-        var (success, message) = await _productService.DeleteProductAsync(User, id);
+        var (success, message) = await productService.DeleteProductAsync(User, id);
         
         if (!success)
         {
@@ -84,7 +77,7 @@ public class ProductController : ControllerBase
     [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> GetPendingDeletion()
     {
-        var (success, _, products) = await _productService.GetPendingDeletionAsync(User);
+        var (success, _, products) = await productService.GetPendingDeletionAsync(User);
         
         if (!success)
         {
@@ -98,7 +91,7 @@ public class ProductController : ControllerBase
     [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> ApproveDeletion(int id)
     {
-        var (success, message) = await _productService.ApproveDeletionAsync(User, id);
+        var (success, message) = await productService.ApproveDeletionAsync(User, id);
         
         if (!success)
         {
@@ -112,7 +105,7 @@ public class ProductController : ControllerBase
     [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> RejectDeletion(int id)
     {
-        var (success, message) = await _productService.RejectDeletionAsync(User, id);
+        var (success, message) = await productService.RejectDeletionAsync(User, id);
         
         if (!success)
         {
@@ -126,7 +119,7 @@ public class ProductController : ControllerBase
     [Authorize(Policy = "UsuarioOrAbove")]
     public async Task<IActionResult> Purchase([FromBody] PurchaseProductDto dto)
     {
-        var (success, message, purchase) = await _productService.PurchaseProductAsync(User, dto);
+        var (success, message, purchase) = await productService.PurchaseProductAsync(User, dto);
         
         if (!success)
         {
@@ -140,7 +133,7 @@ public class ProductController : ControllerBase
     [Authorize(Policy = "UsuarioOrAbove")]
     public async Task<IActionResult> GetMyProducts()
     {
-        var products = await _productService.GetMyProductsAsync(User);
+        var products = await productService.GetMyProductsAsync(User);
         return Ok(products);
     }
 }

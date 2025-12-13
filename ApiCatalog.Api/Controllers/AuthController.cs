@@ -13,7 +13,6 @@ namespace ApiCatalog.Api.Controllers;
 [Route("api/[controller]")]
 public class AuthController(AuthService auth) : ControllerBase
 {
-    // ---------------- Register ----------------
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDto dto)
     {
