@@ -55,7 +55,12 @@ public class AuthService(IUserRepository userRepository, IRoleRepository roleRep
             new Claim("role_level", user.Role.Level.ToString())
         };
 
-        var key = Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!);
+        var keyString = configuration["Jwt:Key"];
+        if (string.IsNullOrWhiteSpace(keyString) || keyString.Length < 16)
+        {
+            return null;
+        }
+        var key = Encoding.UTF8.GetBytes(keyString);
         var creds = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(

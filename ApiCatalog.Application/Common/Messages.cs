@@ -8,6 +8,9 @@ public static class Messages
         public const string UserRegistered = "Usuário registrado com sucesso";
         public const string InvalidCredentials = "Usuário ou senha inválidos";
         public const string UserNotFound = "Usuário não encontrado";
+        public const string Unauthenticated = "Usuário não autenticado. Faça login e tente novamente.";
+        public const string MissingClaims = "Sessão inválida: claims de identidade ausentes.";
+        public const string InvalidToken = "Token inválido ou expirado.";
     }
     
     public static class Logout 

@@ -73,12 +73,27 @@ public class AuthController(AuthService auth) : ControllerBase
     [HttpGet("me")]
     public IActionResult Me()
     {
+        if (User?.Identity is null || !User.Identity.IsAuthenticated)
+        {
+            return Unauthorized(new { message = Messages.Auth.Unauthenticated });
+        }
+
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var emailOrName = User.Identity?.Name;
+        var role = User.FindFirstValue(ClaimTypes.Role);
+        var roleLevel = User.FindFirstValue("role_level");
+
+        if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(role) || string.IsNullOrEmpty(roleLevel))
+        {
+            return Unauthorized(new { message = Messages.Auth.MissingClaims });
+        }
+
         return Ok(new
         {
-            userId = User.FindFirstValue(ClaimTypes.NameIdentifier),
-            emailOrName = User.Identity?.Name,
-            role = User.FindFirstValue(ClaimTypes.Role),
-            roleLevel = User.FindFirstValue("role_level")
+            userId,
+            emailOrName,
+            role,
+            roleLevel
         });
     }
 }
