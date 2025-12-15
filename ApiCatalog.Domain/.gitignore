@@ -1,34 +1,24 @@
-.env
-
 ## Build results
 bin/
 obj/
 
+## Rider / JetBrains
+.idea/
+
 ## Visual Studio
 .vs/
+
+## .NET
+*.dll
+*.pdb
+*.exe
+*.cache
 *.user
 *.suo
-*.cache
 *.log
 
-## Rider / VS Code
-.idea/
-.vscode/
+## SourceLink
+*.sourcelink.json
 
-## ASP.NET
-*.pdb
-*.dll
-*.exe
-*.app
-*.deps.json
-*.runtimeconfig.json
-
-## NuGet
-*.nupkg
-*.snupkg
-.nuget/
-
-## Others
-*.cache
-*.tmp
-*.bak
+## Publish
+publish/
