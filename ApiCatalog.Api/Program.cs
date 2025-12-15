@@ -88,6 +88,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
+app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
