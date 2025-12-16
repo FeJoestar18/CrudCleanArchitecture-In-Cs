@@ -10,7 +10,7 @@
         "projectUniqueName": "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Api/ApiCatalog.Api.csproj",
         "projectName": "ApiCatalog.Api",
         "projectPath": "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Api/ApiCatalog.Api.csproj",
-        "packagesPath": "/home/runner/.nuget/packages/",
+        "packagesPath": "/home/runner/work/CrudCleanArchitecture-In-Cs/.codeql-scratch/dbs/csharp/working/packages",
         "outputPath": "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Api/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
@@ -81,6 +81,20 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.22, 8.0.22]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.linux-x64",
+              "version": "[8.0.22, 8.0.22]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.22, 8.0.22]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -99,7 +113,7 @@
         "projectUniqueName": "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Application/ApiCatalog.Application.csproj",
         "projectName": "ApiCatalog.Application",
         "projectPath": "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Application/ApiCatalog.Application.csproj",
-        "packagesPath": "/home/runner/.nuget/packages/",
+        "packagesPath": "/home/runner/work/CrudCleanArchitecture-In-Cs/.codeql-scratch/dbs/csharp/working/packages",
         "outputPath": "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Application/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
@@ -165,6 +179,16 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.22, 8.0.22]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.22, 8.0.22]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -180,7 +204,7 @@
         "projectUniqueName": "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Domain/ApiCatalog.Domain.csproj",
         "projectName": "ApiCatalog.Domain",
         "projectPath": "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Domain/ApiCatalog.Domain.csproj",
-        "packagesPath": "/home/runner/.nuget/packages/",
+        "packagesPath": "/home/runner/work/CrudCleanArchitecture-In-Cs/.codeql-scratch/dbs/csharp/working/packages",
         "outputPath": "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
@@ -224,6 +248,16 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.22, 8.0.22]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.22, 8.0.22]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -239,7 +273,7 @@
         "projectUniqueName": "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/ApiCatalog.Infra.csproj",
         "projectName": "ApiCatalog.Infra",
         "projectPath": "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/ApiCatalog.Infra.csproj",
-        "packagesPath": "/home/runner/.nuget/packages/",
+        "packagesPath": "/home/runner/work/CrudCleanArchitecture-In-Cs/.codeql-scratch/dbs/csharp/working/packages",
         "outputPath": "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
@@ -307,6 +341,16 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.22, 8.0.22]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.22, 8.0.22]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
