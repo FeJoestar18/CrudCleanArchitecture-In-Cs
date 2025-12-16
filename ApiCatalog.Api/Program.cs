@@ -15,11 +15,14 @@ builder.Services.AddSmartAuthentication(builder.Configuration);
 builder.Services.AddCustomAuthorization();
 
 // --- CORS Configuration
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() 
+                     ?? new[] { "https://apirequest.io" };
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("DefaultCorsPolicy", policy =>
     {
-        policy.WithOrigins("https://apirequest.io")
+        policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();

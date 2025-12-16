@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiCatalog.Infra")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+df5aa921ffa0c628c1efb0cdfee35bde5f5f9680")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4667625c89e332d42c3165492971298b192aacb4")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiCatalog.Infra")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiCatalog.Infra")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
