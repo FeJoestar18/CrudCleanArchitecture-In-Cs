@@ -1,18 +1,18 @@
-/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/bin/Debug/net8.0/ApiCatalog.Infra.deps.json
-/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/bin/Debug/net8.0/ApiCatalog.Infra.runtimeconfig.json
-/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/bin/Debug/net8.0/ApiCatalog.Infra.dll
-/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/bin/Debug/net8.0/ApiCatalog.Infra.pdb
-/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/bin/Debug/net8.0/ApiCatalog.Domain.dll
-/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/bin/Debug/net8.0/ApiCatalog.Domain.pdb
-/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatalog.Infra.csproj.AssemblyReference.cache
-/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatalog.Infra.GeneratedMSBuildEditorConfig.editorconfig
-/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatalog.Infra.AssemblyInfoInputs.cache
-/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatalog.Infra.AssemblyInfo.cs
-/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatalog.Infra.csproj.CoreCompileInputs.cache
-/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatalog.Infra.sourcelink.json
-/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatal.ECB23ACA.Up2Date
-/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatalog.Infra.dll
-/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/refint/ApiCatalog.Infra.dll
-/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatalog.Infra.pdb
-/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatalog.Infra.genruntimeconfig.cache
-/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ref/ApiCatalog.Infra.dll
+/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/bin/Debug/net8.0/ApiCatalog.Infra.deps.json
+/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/bin/Debug/net8.0/ApiCatalog.Infra.runtimeconfig.json
+/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/bin/Debug/net8.0/ApiCatalog.Infra.dll
+/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/bin/Debug/net8.0/ApiCatalog.Infra.pdb
+/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/bin/Debug/net8.0/ApiCatalog.Domain.dll
+/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/bin/Debug/net8.0/ApiCatalog.Domain.pdb
+/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatalog.Infra.csproj.AssemblyReference.cache
+/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatalog.Infra.GeneratedMSBuildEditorConfig.editorconfig
+/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatalog.Infra.AssemblyInfoInputs.cache
+/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatalog.Infra.AssemblyInfo.cs
+/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatalog.Infra.csproj.CoreCompileInputs.cache
+/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatalog.Infra.sourcelink.json
+/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatal.ECB23ACA.Up2Date
+/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatalog.Infra.dll
+/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/refint/ApiCatalog.Infra.dll
+/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatalog.Infra.pdb
+/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ApiCatalog.Infra.genruntimeconfig.cache
+/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Infra/obj/Debug/net8.0/ref/ApiCatalog.Infra.dll
