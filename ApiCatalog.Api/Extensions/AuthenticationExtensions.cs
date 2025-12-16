@@ -14,9 +14,12 @@ public static class AuthenticationExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        var key = configuration["Jwt:Key"];
-        var issuer = configuration["Jwt:Issuer"];
-        var audience = configuration["Jwt:Audience"];
+        var key = configuration["Jwt:Key"] 
+                  ?? throw new InvalidOperationException("JWT Key is not configured in appsettings.json");
+        var issuer = configuration["Jwt:Issuer"] 
+                     ?? throw new InvalidOperationException("JWT Issuer is not configured in appsettings.json");
+        var audience = configuration["Jwt:Audience"] 
+                       ?? throw new InvalidOperationException("JWT Audience is not configured in appsettings.json");
 
         services.AddAuthentication(options =>
         {
@@ -46,7 +49,7 @@ public static class AuthenticationExtensions
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = issuer,
                 ValidAudience = audience,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
             };
         })
         .AddCookie("SmartCookie", options =>
