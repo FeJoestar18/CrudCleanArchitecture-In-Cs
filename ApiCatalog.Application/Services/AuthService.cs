@@ -50,15 +50,16 @@ public class AuthService(IUserRepository userRepository, IRoleRepository roleRep
         
         var claims = new List<Claim>
         {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.Email ?? string.Empty),
             new Claim(ClaimTypes.Role, user.Role.Name),
             new Claim("role_level", user.Role.Level.ToString())
         };
 
         var keyString = configuration["Jwt:Key"];
-        if (string.IsNullOrWhiteSpace(keyString) || keyString.Length < 16)
+        if (string.IsNullOrWhiteSpace(keyString) || Encoding.UTF8.GetByteCount(keyString) < 16)
         {
-            return null;
+            throw new InvalidOperationException("JWT key is missing or too short. Provide a symmetric key with at least 128 bits (16 bytes).");
         }
         var key = Encoding.UTF8.GetBytes(keyString);
         var creds = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);

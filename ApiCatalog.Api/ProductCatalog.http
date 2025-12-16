@@ -9,7 +9,7 @@ Content-Type: application/json
 {
   "username": "admin",
   "password": "admin123",
-  "cpf": 11111111111,
+  "cpf": "11111111111",
   "email": "admin@email.com",
   "role": "Admin"
 }
@@ -21,7 +21,7 @@ Content-Type: application/json
 {
   "username": "funcionario",
   "password": "func123",
-  "cpf": 22222222222,
+  "cpf": "22222222222",
   "email": "funcionario@email.com",
   "role": "Funcionario"
 }
@@ -33,7 +33,7 @@ Content-Type: application/json
 {
   "username": "usuario",
   "password": "user123",
-  "cpf": 33333333333,
+  "cpf": "33333333333",
   "email": "usuario@email.com",
   "role": "Usuario"
 }
@@ -227,4 +227,3 @@ Authorization: Bearer TOKEN_ADMIN
 # ✓ Produto deletado imediatamente
 
 ###
-

@@ -29,7 +29,7 @@ public class AuthController(AuthService auth) : ControllerBase
         var tokenOrNull = await auth.LoginAsync(dto);
         var user = await auth.GetUserByEmailOrUsernameAsync(dto.Email); 
 
-        if (user is null || user.Role is null)
+        if (user?.Role is null)
             return Unauthorized(new { message = Messages.Auth.InvalidCredentials });
 
         var claims = new List<Claim>
@@ -40,11 +40,12 @@ public class AuthController(AuthService auth) : ControllerBase
             new Claim("role_level", user.Role.Level.ToString())
         };
 
-        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        const string cookieScheme = "SmartCookie";
+        var identity = new ClaimsIdentity(claims, cookieScheme);
         var principal = new ClaimsPrincipal(identity);
 
         await HttpContext.SignInAsync(
-            CookieAuthenticationDefaults.AuthenticationScheme,
+            cookieScheme,
             principal,
             new AuthenticationProperties
             {
@@ -64,7 +65,8 @@ public class AuthController(AuthService auth) : ControllerBase
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
     {
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        const string cookieScheme = "SmartCookie";
+        await HttpContext.SignOutAsync(cookieScheme);
         return Ok(new { message = Messages.Logout.LogoutSuccessful });
     }
 
@@ -72,7 +74,7 @@ public class AuthController(AuthService auth) : ControllerBase
     [HttpGet("me")]
     public IActionResult Me()
     {
-        if (User?.Identity is null || !User.Identity.IsAuthenticated)
+        if (!(User.Identity?.IsAuthenticated ?? false))
         {
             return Unauthorized(new { message = Messages.Auth.Unauthenticated });
         }
