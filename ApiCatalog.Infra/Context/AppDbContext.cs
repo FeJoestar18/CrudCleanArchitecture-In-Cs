@@ -42,6 +42,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .HasForeignKey(p => p.RequestedDeletionByUserId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        // Ensure Price precision/scale is set in the DB
+        modelBuilder.Entity<Product>()
+            .Property(p => p.Price)
+            .HasPrecision(18, 2);
+
         // Configurar relacionamento UserProduct
         modelBuilder.Entity<UserProduct>()
             .HasOne(up => up.User)

@@ -53,7 +53,8 @@ namespace ApiCatalog.Infra.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("RequestedDeletionByUserId")
                         .HasColumnType("int");

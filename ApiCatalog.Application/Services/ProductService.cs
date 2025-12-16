@@ -13,6 +13,7 @@ public class ProductService(
     IUserRepository userRepository,
     IAuthorizationService authorizationService)
 {
+    private static decimal RoundPrice(decimal price) => Math.Round(price, 2);
     public async Task<List<ProductResponseDto>> GetAllProductsAsync(ClaimsPrincipal user)
     {
         var isAdmin = await IsUserLevelAsync(user, 3);
@@ -22,7 +23,7 @@ public class ProductService(
             p.Id,
             p.Name,
             p.Description,
-            p.Price,
+            RoundPrice(p.Price),
             p.Stock,
             p.IsActive,
             p.CreatedAt,
@@ -74,7 +75,7 @@ public class ProductService(
         {
             Name = dto.Name,
             Description = dto.Description,
-            Price = dto.Price,
+            Price = RoundPrice(dto.Price),
             Stock = dto.Stock,
             CreatedByUserId = currentUser.Id,
             IsActive = true
@@ -130,7 +131,7 @@ public class ProductService(
             product.Description = dto.Description;
 
         if (dto.Price.HasValue)
-            product.Price = dto.Price.Value;
+            product.Price = RoundPrice(dto.Price.Value);
 
         if (dto.Stock.HasValue)
             product.Stock = dto.Stock.Value;
@@ -198,7 +199,7 @@ public class ProductService(
             p.Id,
             p.Name,
             p.Description,
-            p.Price,
+            RoundPrice(p.Price),
             p.Stock,
             p.IsActive,
             p.CreatedAt,
@@ -302,7 +303,7 @@ public class ProductService(
             UserId = currentUser.Id,
             ProductId = product.Id,
             Quantity = dto.Quantity,
-            PurchasePrice = product.Price
+            PurchasePrice = RoundPrice(product.Price)
         };
 
         await productRepository.AddUserProductAsync(userProduct);
@@ -312,7 +313,7 @@ public class ProductService(
             userProduct.Id,
             product.Name,
             dto.Quantity,
-            product.Price,
+            RoundPrice(product.Price),
             userProduct.PurchasedAt
         );
 
@@ -322,15 +323,15 @@ public class ProductService(
     public async Task<List<UserProductResponseDto>> GetMyProductsAsync(ClaimsPrincipal user)
     {
         var currentUser = await GetCurrentUserAsync(user);
-        if (currentUser == null) return new List<UserProductResponseDto>();
+        if (currentUser == null) return [];
 
         var userProducts = await productRepository.GetUserProductsAsync(currentUser.Id);
         
         return userProducts.Select(up => new UserProductResponseDto(
             up.Id,
-            up.Product?.Name ?? "Produto não encontrado",
+            up.Product?.Name ?? Messages.Products.ProductNotFound,
             up.Quantity,
-            up.PurchasePrice,
+            RoundPrice(up.PurchasePrice),
             up.PurchasedAt
         )).ToList();
     }
