@@ -19,6 +19,7 @@ public static class Messages
         public const string CpfAlreadyExists = "CPF já cadastrado.";
         public const string WeakPassword = "Senha fraca. Use ao menos 6 caracteres, com letras e números.";
         public const string InvalidCpf = "CPF inválido.";
+        public static string InvalidEmail { get; set; } = null!;
     }
     
     public static class Logout 
@@ -59,7 +60,7 @@ public static class Messages
         public const string Failure = "Falha ao realizar a operação";
         public const string InvalidJson = "Corpo JSON inválido ou Content-Type ausente.";
         
-        public static string? InvalidRequest;
+        public static string? InvalidRequest { get; set; }
     }
     
     public static class Roles
@@ -68,4 +69,5 @@ public static class Messages
         public const string RoleCreated = "Role criada com sucesso";
         public const string InsufficientPermissions = "Permissões insuficientes para realizar esta ação";
     }
+    
 }
