@@ -10,14 +10,12 @@ public class MinimumRoleLevelHandler : AuthorizationHandler<MinimumRoleLevelRequ
         MinimumRoleLevelRequirement requirement)
     {
         var levelClaim = context.User.FindFirst("role_level")?.Value;
+
+        if (!int.TryParse(levelClaim, out var userLevel)) 
+            return Task.CompletedTask;
         
-        if (int.TryParse(levelClaim, out var userLevel))
-        {
-            if (userLevel >= requirement.MinimumLevel)
-            {
-                context.Succeed(requirement);
-            }
-        }
+        if (userLevel >= requirement.MinimumLevel)
+        {context.Succeed(requirement);}
 
         return Task.CompletedTask;
     }

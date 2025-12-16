@@ -10,10 +10,8 @@ public static class PasswordPolicy
             return false;
         if (password.Length < 6)
             return false;
-        if (!RegexPatterns.PasswordHasLetter().IsMatch(password))
-            return false;
-        if (!RegexPatterns.PasswordHasDigit().IsMatch(password))
-            return false;
-        return true;
+        
+        return RegexPatterns.PasswordHasLetter().IsMatch(password) 
+               && RegexPatterns.PasswordHasDigit().IsMatch(password);
     }
 }
