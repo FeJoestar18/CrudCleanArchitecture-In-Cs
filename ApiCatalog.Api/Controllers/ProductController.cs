@@ -1,3 +1,4 @@
+using ApiCatalog.Api.Extensions;
 using ApiCatalog.Application.DTOs;
 using ApiCatalog.Application.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -16,7 +17,7 @@ public class ProductController(ProductService productService) : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var products = await productService.GetAllProductsAsync(User);
-        return Ok(products);
+        return this.OkWithMessage(products, Messages.JsonResponsesApi.Success);
     }
 
     [HttpGet("{id:int}")]
@@ -24,11 +25,7 @@ public class ProductController(ProductService productService) : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var product = await productService.GetProductByIdAsync(id);
-        if (product == null)
-        {
-            return NotFound(new { message = Messages.Products.ProductNotFound });
-        }
-        return Ok(product);
+        return product == null ? this.NotFoundWithMessage(Messages.Products.ProductNotFound) : this.OkWithMessage(product, Messages.JsonResponsesApi.Success);
     }
 
     [HttpPost]
@@ -37,12 +34,7 @@ public class ProductController(ProductService productService) : ControllerBase
     {
         var (success, message, product) = await productService.CreateProductAsync(User, dto);
         
-        if (!success)
-        {
-            return BadRequest(new { message });
-        }
-
-        return CreatedAtAction(nameof(GetById), new { id = product!.Id }, product);
+        return !success ? this.BadRequestWithMessage(message) : this.CreatedWithMessage(nameof(GetById), new { id = product!.Id }, product, Messages.Products.ProductCreated);
     }
 
     [HttpPut("{id:int}")]
@@ -50,17 +42,14 @@ public class ProductController(ProductService productService) : ControllerBase
     public async Task<IActionResult> Update(int id, [FromBody] UpdateProductDto? dto)
     {
         if (dto == null)
-            return BadRequest(new { message = Messages.JsonResponsesApi.InvalidJson });
+            return this.BadRequestWithMessage(Messages.JsonResponsesApi.InvalidJson);
 
         if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+            return this.BadRequestWithMessage(Messages.JsonResponsesApi.InvalidRequest);
 
         var (success, message) = await productService.UpdateProductAsync(User, id, dto);
     
-        if (!success)
-            return BadRequest(new { message });
-
-        return NoContent();
+        return !success ? this.BadRequestWithMessage(message) : this.NoContentWithMessage(Messages.Products.ProductUpdated);
     }
     [HttpDelete("{id:int}")]
     [Authorize(Policy = "FuncionarioOrAbove")]
@@ -68,26 +57,16 @@ public class ProductController(ProductService productService) : ControllerBase
     {
         var (success, message) = await productService.DeleteProductAsync(User, id);
         
-        if (!success)
-        {
-            return BadRequest(new { message });
-        }
-
-        return Ok(new { message });
+        return !success ? this.BadRequestWithMessage(message) : this.OkWithMessage<object?>(null, message);
     }
 
     [HttpGet("pending-deletion")]
     [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> GetPendingDeletion()
     {
-        var (success, _, products) = await productService.GetPendingDeletionAsync(User);
+        var (success, message, products) = await productService.GetPendingDeletionAsync(User);
         
-        if (!success)
-        {
-            return Forbid();
-        }
-
-        return Ok(products);
+        return !success ? this.ForbidWithMessage(message) : this.OkWithMessage(products, message);
     }
 
     [HttpPost("{id:int}/approve-deletion")]
@@ -96,12 +75,7 @@ public class ProductController(ProductService productService) : ControllerBase
     {
         var (success, message) = await productService.ApproveDeletionAsync(User, id);
         
-        if (!success)
-        {
-            return BadRequest(new { message });
-        }
-
-        return Ok(new { message });
+        return !success ? this.BadRequestWithMessage(message) : this.OkWithMessage<object?>(null, message);
     }
 
     [HttpPost("{id:int}/reject-deletion")]
@@ -110,12 +84,7 @@ public class ProductController(ProductService productService) : ControllerBase
     {
         var (success, message) = await productService.RejectDeletionAsync(User, id);
         
-        if (!success)
-        {
-            return BadRequest(new { message });
-        }
-
-        return Ok(new { message });
+        return !success ? this.BadRequestWithMessage(message) : this.OkWithMessage<object?>(null, message);
     }
 
     [HttpPost("purchase")]
@@ -124,12 +93,7 @@ public class ProductController(ProductService productService) : ControllerBase
     {
         var (success, message, purchase) = await productService.PurchaseProductAsync(User, dto);
         
-        if (!success)
-        {
-            return BadRequest(new { message });
-        }
-
-        return Ok(new { message, purchase });
+        return !success ? this.BadRequestWithMessage(message) : this.OkWithMessage(purchase, message);
     }
 
     [HttpGet("my-products")]
@@ -137,7 +101,7 @@ public class ProductController(ProductService productService) : ControllerBase
     public async Task<IActionResult> GetMyProducts()
     {
         var products = await productService.GetMyProductsAsync(User);
-        return Ok(products);
+        return this.OkWithMessage(products, Messages.JsonResponsesApi.Success);
     }
 }
 

@@ -11,6 +11,7 @@ public static class Messages
         public const string Unauthenticated = "Usuário não autenticado. Faça login e tente novamente.";
         public const string MissingClaims = "Sessão inválida: claims de identidade ausentes.";
         public const string InvalidToken = "Token inválido ou expirado.";
+        public const string LoginSuccessful = "Login realizado com sucesso";
     }
     
     public static class Logout 
@@ -50,6 +51,8 @@ public static class Messages
         public const string Success = "Operação realizada com sucesso";
         public const string Failure = "Falha ao realizar a operação";
         public const string InvalidJson = "Corpo JSON inválido ou Content-Type ausente.";
+        
+        public static string? InvalidRequest;
     }
     
     public static class Roles

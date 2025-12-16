@@ -61,13 +61,13 @@ public class ProductService(
     {
         if (!await IsUserLevelAsync(user, 2))
         {
-            return (false, "Apenas funcionários ou admins podem criar produtos", null);
+            return (false, Messages.Products.OnlyEmployeesCanCreate, null);
         }
 
         var currentUser = await GetCurrentUserAsync(user);
         if (currentUser == null)
         {
-            return (false, "Usuário não encontrado", null);
+            return (false, Messages.Auth.UserNotFound, null);
         }
 
         var product = new Product
@@ -98,7 +98,7 @@ public class ProductService(
             null
         );
 
-        return (true, "Produto criado com sucesso", response);
+        return (true, Messages.Products.ProductCreated, response);
     }
 
     public async Task<(bool Success, string Message)> UpdateProductAsync(
@@ -109,21 +109,20 @@ public class ProductService(
         // Validar permissão mínima (Funcionario - Level 2)
         if (!await IsUserLevelAsync(user, 2))
         {
-            return (false, "Apenas funcionários ou admins podem editar produtos");
+            return (false, Messages.Products.OnlyEmployeesCanEdit);
         }
 
         var product = await productRepository.GetByIdAsync(id);
         if (product == null)
         {
-            return (false, "Produto não encontrado");
+            return (false, Messages.Products.ProductNotFound);
         }
 
         if (product.PendingDeletion)
         {
-            return (false, "Produto pendente de deleção não pode ser editado");
+            return (false, Messages.Products.CannotEditPendingDeletion);
         }
 
-        // Atualizar campos
         if (!string.IsNullOrEmpty(dto.Name))
             product.Name = dto.Name;
 
@@ -142,7 +141,7 @@ public class ProductService(
         await productRepository.UpdateAsync(product);
         await productRepository.SaveChangesAsync();
 
-        return (true, "Produto atualizado com sucesso");
+        return (true, Messages.Products.ProductUpdated);
     }
 
     public async Task<(bool Success, string Message)> DeleteProductAsync(
@@ -152,7 +151,7 @@ public class ProductService(
         var product = await productRepository.GetByIdAsync(id);
         if (product == null)
         {
-            return (false, "Produto não encontrado");
+            return (false, Messages.Products.ProductNotFound);
         }
 
         var isAdmin = await IsUserLevelAsync(user, 3);
@@ -160,20 +159,20 @@ public class ProductService(
 
         if (!isFuncionario && !isAdmin)
         {
-            return (false, "Você não tem permissão para deletar produtos");
+            return (false, Messages.Products.OnlyEmployeesCanDelete);
         }
 
         if (isAdmin)
         {
             await productRepository.DeleteAsync(product);
             await productRepository.SaveChangesAsync();
-            return (true, "Produto deletado com sucesso");
+            return (true, Messages.Products.ProductDeleted);
         }
 
         var currentUser = await GetCurrentUserAsync(user);
         if (currentUser == null)
         {
-            return (false, "Usuário não encontrado");
+            return (false, Messages.Auth.UserNotFound);
         }
 
         product.PendingDeletion = true;
@@ -183,7 +182,7 @@ public class ProductService(
         await productRepository.UpdateAsync(product);
         await productRepository.SaveChangesAsync();
 
-        return (true, "Solicitação de deleção enviada para aprovação do admin");
+        return (true, Messages.Products.DeletionRequested);
     }
 
     public async Task<(bool Success, string Message, List<ProductResponseDto>? Products)> GetPendingDeletionAsync(
@@ -191,7 +190,7 @@ public class ProductService(
     {
         if (!await IsUserLevelAsync(user, 3))
         {
-            return (false, "Apenas admins podem visualizar solicitações de deleção", null);
+            return (false, Messages.Products.OnlyAdminsCanViewPending, null);
         }
 
         var products = await productRepository.GetPendingDeletionAsync();
@@ -210,7 +209,7 @@ public class ProductService(
             p.DeletionRequestedAt
         )).ToList();
 
-        return (true, "Produtos pendentes de deleção", response);
+        return (true, Messages.Products.PendingDeletionProducts, response);
     }
 
     public async Task<(bool Success, string Message)> ApproveDeletionAsync(
@@ -219,24 +218,24 @@ public class ProductService(
     {
         if (!await IsUserLevelAsync(user, 3))
         {
-            return (false, "Apenas admins podem aprovar deleções");
+            return (false, Messages.Products.OnlyAdminsCanApprove);
         }
 
         var product = await productRepository.GetByIdAsync(id);
         if (product == null)
         {
-            return (false, "Produto não encontrado");
+            return (false, Messages.Products.ProductNotFound);
         }
 
         if (!product.PendingDeletion)
         {
-            return (false, "Este produto não está pendente de deleção");
+            return (false, Messages.Products.NotPendingDeletion);
         }
 
         await productRepository.DeleteAsync(product);
         await productRepository.SaveChangesAsync();
 
-        return (true, "Deleção aprovada e produto removido");
+        return (true, Messages.Products.DeletionApproved);
     }
 
     public async Task<(bool Success, string Message)> RejectDeletionAsync(
@@ -245,18 +244,18 @@ public class ProductService(
     {
         if (!await IsUserLevelAsync(user, 3))
         {
-            return (false, "Apenas admins podem rejeitar deleções");
+            return (false, Messages.Products.OnlyAdminsCanReject);
         }
 
         var product = await productRepository.GetByIdAsync(id);
         if (product == null)
         {
-            return (false, "Produto não encontrado");
+            return (false, Messages.Products.ProductNotFound);
         }
 
         if (!product.PendingDeletion)
         {
-            return (false, "Este produto não está pendente de deleção");
+            return (false, Messages.Products.NotPendingDeletion);
         }
 
         product.PendingDeletion = false;
@@ -266,7 +265,7 @@ public class ProductService(
         await productRepository.UpdateAsync(product);
         await productRepository.SaveChangesAsync();
 
-        return (true, "Solicitação de deleção rejeitada");
+        return (true, Messages.Products.DeletionRejected);
     }
 
     public async Task<(bool Success, string Message, UserProductResponseDto? Purchase)> PurchaseProductAsync(

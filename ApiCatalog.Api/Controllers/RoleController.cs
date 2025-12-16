@@ -1,4 +1,5 @@
 using ApiCatalog.Application.Services;
+using ApiCatalog.Api.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ApiCatalog.Application.Common;
@@ -15,7 +16,7 @@ public class RoleController(RoleService roleService) : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var roles = await roleService.GetAllRolesAsync();
-        return Ok(roles);
+        return this.OkWithMessage(roles, Messages.JsonResponsesApi.Success);
     }
 
     [HttpPost]
@@ -24,12 +25,7 @@ public class RoleController(RoleService roleService) : ControllerBase
     {
         var success = await roleService.AddRoleAsync(User, dto.Name, dto.Level, dto.ParentRoleId);
         
-        if (!success)
-        {
-            return Forbid();
-        }
-
-        return Ok(new { message = Messages.Roles.RoleCreated });
+        return !success ? this.ForbidWithMessage(Messages.Roles.InsufficientPermissions) : this.CreatedWithMessage<object>(nameof(GetAll), null, null, Messages.Roles.RoleCreated);
     }
 }
 

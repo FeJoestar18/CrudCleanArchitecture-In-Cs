@@ -1,8 +1,8 @@
 using ApiCatalog.Application.DTOs;
 using ApiCatalog.Application.Services;
 using ApiCatalog.Application.Common;
+using ApiCatalog.Api.Extensions;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -17,10 +17,7 @@ public class AuthController(AuthService auth) : ControllerBase
     public async Task<IActionResult> Register([FromBody] RegisterDto dto)
     {
         var created = await auth.RegisterAsync(dto);
-        if (!created)
-            return BadRequest(new { message = Messages.Auth.UserAlreadyExists });
-
-        return Ok(new { message = Messages.Auth.UserRegistered });
+        return !created ? this.BadRequestWithMessage(Messages.Auth.UserAlreadyExists) : this.CreatedWithMessage<object>(nameof(Me), null, null, Messages.Auth.UserRegistered);
     }
 
     [HttpPost("login")]
@@ -30,7 +27,7 @@ public class AuthController(AuthService auth) : ControllerBase
         var user = await auth.GetUserByEmailOrUsernameAsync(dto.Email); 
 
         if (user?.Role is null)
-            return Unauthorized(new { message = Messages.Auth.InvalidCredentials });
+            return this.BadRequestWithMessage(Messages.Auth.InvalidCredentials);
 
         var claims = new List<Claim>
         {
@@ -54,11 +51,7 @@ public class AuthController(AuthService auth) : ControllerBase
                 AllowRefresh = true
             });
 
-        return Ok(new
-        {
-            message = Messages.Auth.UserRegistered,
-            jwt = tokenOrNull
-        });
+        return this.OkWithMessage(new { jwt = tokenOrNull }, Messages.Auth.LoginSuccessful);
     }
 
     [Authorize]
@@ -67,7 +60,7 @@ public class AuthController(AuthService auth) : ControllerBase
     {
         const string cookieScheme = "SmartCookie";
         await HttpContext.SignOutAsync(cookieScheme);
-        return Ok(new { message = Messages.Logout.LogoutSuccessful });
+        return this.OkWithMessage<object?>(null, Messages.Logout.LogoutSuccessful);
     }
 
     [Authorize]
@@ -75,9 +68,7 @@ public class AuthController(AuthService auth) : ControllerBase
     public IActionResult Me()
     {
         if (!(User.Identity?.IsAuthenticated ?? false))
-        {
-            return Unauthorized(new { message = Messages.Auth.Unauthenticated });
-        }
+            return this.BadRequestWithMessage(Messages.Auth.Unauthenticated);
 
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var emailOrName = User.Identity?.Name;
@@ -85,16 +76,16 @@ public class AuthController(AuthService auth) : ControllerBase
         var roleLevel = User.FindFirstValue("role_level");
 
         if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(role) || string.IsNullOrEmpty(roleLevel))
-        {
-            return Unauthorized(new { message = Messages.Auth.MissingClaims });
-        }
+            return this.BadRequestWithMessage(Messages.Auth.MissingClaims);
 
-        return Ok(new
+        var userData = new
         {
             userId,
             emailOrName,
             role,
             roleLevel
-        });
+        };
+
+        return this.OkWithMessage(userData, Messages.JsonResponsesApi.Success);
     }
 }
