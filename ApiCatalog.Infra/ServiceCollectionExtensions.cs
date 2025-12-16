@@ -10,7 +10,7 @@ namespace ApiCatalog.Infra;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddInfraServices(this IServiceCollection services, IConfiguration configuration)
+    public static void AddInfraServices(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
         services.AddDbContext<AppDbContext>(options =>
@@ -20,7 +20,5 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
-
-        return services;
     }
 }
