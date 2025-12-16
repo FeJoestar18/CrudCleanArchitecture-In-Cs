@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Application/ApiCatalog.Application.csproj": {}
+    "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Application/ApiCatalog.Application.csproj": {}
   },
   "projects": {
-    "/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Application/ApiCatalog.Application.csproj": {
+    "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Application/ApiCatalog.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Application/ApiCatalog.Application.csproj",
+        "projectUniqueName": "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Application/ApiCatalog.Application.csproj",
         "projectName": "ApiCatalog.Application",
-        "projectPath": "/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Application/ApiCatalog.Application.csproj",
-        "packagesPath": "/home/usuario/.nuget/packages/",
-        "outputPath": "/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Application/obj/",
+        "projectPath": "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Application/ApiCatalog.Application.csproj",
+        "packagesPath": "/home/runner/.nuget/packages/",
+        "outputPath": "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Application/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/usuario/.nuget/NuGet/NuGet.Config"
+          "/home/runner/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -26,8 +26,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Domain/ApiCatalog.Domain.csproj": {
-                "projectPath": "/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Domain/ApiCatalog.Domain.csproj"
+              "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Domain/ApiCatalog.Domain.csproj": {
+                "projectPath": "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Domain/ApiCatalog.Domain.csproj"
               }
             }
           }
@@ -41,7 +41,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -80,21 +81,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.416/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/10.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Domain/ApiCatalog.Domain.csproj": {
+    "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Domain/ApiCatalog.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Domain/ApiCatalog.Domain.csproj",
+        "projectUniqueName": "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Domain/ApiCatalog.Domain.csproj",
         "projectName": "ApiCatalog.Domain",
-        "projectPath": "/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Domain/ApiCatalog.Domain.csproj",
-        "packagesPath": "/home/usuario/.nuget/packages/",
-        "outputPath": "/home/usuario/Documentos/Apreendizado DOT NET/CrudCleanArchitecture-In-Cs/ApiCatalog.Domain/obj/",
+        "projectPath": "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Domain/ApiCatalog.Domain.csproj",
+        "packagesPath": "/home/runner/.nuget/packages/",
+        "outputPath": "/home/runner/work/CrudCleanArchitecture-In-Cs/CrudCleanArchitecture-In-Cs/ApiCatalog.Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/usuario/.nuget/NuGet/NuGet.Config"
+          "/home/runner/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -117,7 +118,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -138,7 +140,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.416/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/10.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
