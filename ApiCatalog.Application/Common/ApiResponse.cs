@@ -1,17 +1,8 @@
 namespace ApiCatalog.Application.Common;
 
-public class ApiResponse<T>
+public class ApiResponse<T>(bool success, string? message, T? data = default)
 {
-    public bool Success { get; set; }
-    public string? Message { get; set; } = string.Empty;
-    public T? Data { get; set; }
-
-    public ApiResponse() { }
-
-    public ApiResponse(bool success, string? message, T? data = default)
-    {
-        Success = success;
-        Message = message;
-        Data = data;
-    }
+    public bool Success { get; set; } = success;
+    public string? Message { get; set; } = message;
+    public T? Data { get; set; } = data;
 }
