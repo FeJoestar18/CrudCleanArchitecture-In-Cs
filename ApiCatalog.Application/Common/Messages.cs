@@ -10,8 +10,15 @@ public static class Messages
         public const string UserNotFound = "Usuário não encontrado";
         public const string Unauthenticated = "Usuário não autenticado. Faça login e tente novamente.";
         public const string MissingClaims = "Sessão inválida: claims de identidade ausentes.";
-        public const string InvalidToken = "Token inválido ou expirado.";
         public const string LoginSuccessful = "Login realizado com sucesso";
+
+        public const string UsernameRequired = "Username obrigatório.";
+        public const string PasswordRequired = "Senha obrigatória.";
+        public const string CpfRequired = "CPF obrigatório.";
+        public const string EmailAlreadyExists = "Email já cadastrado.";
+        public const string CpfAlreadyExists = "CPF já cadastrado.";
+        public const string WeakPassword = "Senha fraca. Use ao menos 6 caracteres, com letras e números.";
+        public const string InvalidCpf = "CPF inválido.";
     }
     
     public static class Logout 

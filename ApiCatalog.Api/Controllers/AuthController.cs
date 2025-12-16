@@ -1,11 +1,11 @@
+using System.Security.Claims;
+using ApiCatalog.Api.Extensions;
+using ApiCatalog.Application.Common;
 using ApiCatalog.Application.DTOs;
 using ApiCatalog.Application.Services;
-using ApiCatalog.Application.Common;
-using ApiCatalog.Api.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace ApiCatalog.Api.Controllers;
 
@@ -16,15 +16,19 @@ public class AuthController(AuthService auth) : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDto dto)
     {
-        var created = await auth.RegisterAsync(dto);
-        return !created ? this.BadRequestWithMessage(Messages.Auth.UserAlreadyExists) : this.CreatedWithMessage<object>(nameof(Me), null, null, Messages.Auth.UserRegistered);
+        var (success, message) = await auth.RegisterAsync(dto);
+        
+        return !success ? this.BadRequestWithMessage(message ?? Messages.Auth.UserAlreadyExists) : this.CreatedWithMessage<object>(nameof(Me), null, null, message ?? Messages.Auth.UserRegistered);
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
-        var tokenOrNull = await auth.LoginAsync(dto);
-        var user = await auth.GetUserByEmailOrUsernameAsync(dto.Email); 
+        var (token, message) = await auth.LoginAsync(dto);
+        if (token == null)
+            return this.BadRequestWithMessage(message ?? Messages.Auth.InvalidCredentials);
+
+        var user = await auth.GetUserByEmailOrUsernameAsync(dto.Email);
 
         if (user?.Role is null)
             return this.BadRequestWithMessage(Messages.Auth.InvalidCredentials);
@@ -51,7 +55,7 @@ public class AuthController(AuthService auth) : ControllerBase
                 AllowRefresh = true
             });
 
-        return this.OkWithMessage(new { jwt = tokenOrNull }, Messages.Auth.LoginSuccessful);
+        return this.OkWithMessage(new { jwt = token }, message ?? Messages.Auth.LoginSuccessful);
     }
 
     [Authorize]

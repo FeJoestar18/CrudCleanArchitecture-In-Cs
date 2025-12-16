@@ -21,6 +21,13 @@ public class UserRepository(AppDbContext context) : IUserRepository
             .FirstOrDefaultAsync(u => u.Email == email);
     }
     
+    public async Task<User?> GetByCpfAsync(string cpf)
+    {
+        return await context.Users
+            .Include(u => u.Role)
+            .FirstOrDefaultAsync(u => u.Cpf == cpf);
+    }
+    
     public async Task AddAsync(User user)
     {
         await context.Users.AddAsync(user);

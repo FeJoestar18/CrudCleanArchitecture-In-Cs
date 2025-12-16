@@ -1,3 +1,4 @@
+using ApiCatalog.Application.Common;
 using ApiCatalog.Application.DTOs;
 using ApiCatalog.Domain.Interfaces;
 using ApiCatalog.Domain.Entities;
@@ -5,16 +6,23 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using ApiCatalog.Application.Services.InterfaceService;
 using Microsoft.Extensions.Configuration;
 
 namespace ApiCatalog.Application.Services;
 
-public class AuthService(IUserRepository userRepository, IRoleRepository roleRepository, IConfiguration configuration)
+public class AuthService(IUserRepository userRepository, IRoleRepository roleRepository, IConfiguration configuration,  IUserValidationService validationService)
 {
-    public async Task<bool> RegisterAsync(RegisterDto dto)
+    public async Task<(bool Success, string? Message)> RegisterAsync(RegisterDto dto)
     {
+        var validation = await validationService.ValidateRegistrationAsync(dto);
+        if (!validation.IsValid)
+        {
+            return (false, validation.Message);
+        }
+
         var existing = await userRepository.GetByUsernameAsync(dto.Username);
-        if (existing != null) return false;
+        if (existing != null) return (false, Messages.Auth.UserAlreadyExists);
 
         Role? role = null;
         if (!string.IsNullOrEmpty(dto.Role))
@@ -24,7 +32,7 @@ public class AuthService(IUserRepository userRepository, IRoleRepository roleRep
         
         role ??= await roleRepository.GetByNameAsync("Usuario");
         
-        if (role == null) return false; 
+        if (role == null) return (false, Messages.Roles.RoleNotFound); 
 
         var user = new User
         {
@@ -37,16 +45,17 @@ public class AuthService(IUserRepository userRepository, IRoleRepository roleRep
 
         await userRepository.AddAsync(user);
         await userRepository.SaveChangesAsync();
-        return true;
+        return (true, Messages.Auth.UserRegistered);
     }
 
-    public async Task<string?> LoginAsync(LoginDto dto)
+    public async Task<(string? Token, string? Message)> LoginAsync(LoginDto dto)
     {
         var user = await userRepository.GetByUsernameAsync(dto.Email);
-        if (user?.Role == null) return null;
+        
+        if (user?.Role == null) return (null, Messages.Auth.UserNotFound);
 
         var valid = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
-        if (!valid) return null;
+        if (!valid) return (null, Messages.Auth.InvalidCredentials);
         
         var claims = new List<Claim>
         {
@@ -72,7 +81,8 @@ public class AuthService(IUserRepository userRepository, IRoleRepository roleRep
             signingCredentials: creds
         );
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+        return (jwt, Messages.Auth.LoginSuccessful);
     }
     
     public async Task<User?> GetUserByEmailOrUsernameAsync(string emailOrUsername)
