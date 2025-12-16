@@ -47,18 +47,21 @@ public class ProductController(ProductService productService) : ControllerBase
 
     [HttpPut("{id:int}")]
     [Authorize(Policy = "FuncionarioOrAbove")]
-    public async Task<IActionResult> Update(int id, [FromBody] UpdateProductDto dto)
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateProductDto? dto)
     {
+        if (dto == null)
+            return BadRequest(new { message = Messages.JsonResponsesApi.InvalidJson });
+
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
         var (success, message) = await productService.UpdateProductAsync(User, id, dto);
-        
+    
         if (!success)
-        {
             return BadRequest(new { message });
-        }
 
-        return Ok(new { message });
+        return NoContent();
     }
-
     [HttpDelete("{id:int}")]
     [Authorize(Policy = "FuncionarioOrAbove")]
     public async Task<IActionResult> Delete(int id)

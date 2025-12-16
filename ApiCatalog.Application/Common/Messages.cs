@@ -44,6 +44,13 @@ public static class Messages
         public const string OnlyAdminsCanApprove = "Apenas admins podem aprovar deleções";
         public const string OnlyAdminsCanReject = "Apenas admins podem rejeitar deleções";
     }
+
+    public static class JsonResponsesApi
+    {
+        public const string Success = "Operação realizada com sucesso";
+        public const string Failure = "Falha ao realizar a operação";
+        public const string InvalidJson = "Corpo JSON inválido ou Content-Type ausente.";
+    }
     
     public static class Roles
     {
