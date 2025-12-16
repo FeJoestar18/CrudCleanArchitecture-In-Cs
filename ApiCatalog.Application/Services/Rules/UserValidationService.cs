@@ -7,10 +7,8 @@ using ApiCatalog.Domain.ValueObjects;
 
 namespace ApiCatalog.Application.Services.Rules;
 
-public class UserValidationService(
-    IUserRepository userRepository,
-    IRoleRepository roleRepository
-) : IUserValidationService
+public class UserValidationService(IUserRepository userRepository, IRoleRepository roleRepository)
+    : IUserValidationService
 {
     public async Task<ValidationResult> ValidateRegistrationAsync(RegisterDto dto)
     {
