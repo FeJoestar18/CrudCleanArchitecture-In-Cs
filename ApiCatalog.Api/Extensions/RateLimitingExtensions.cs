@@ -2,14 +2,12 @@ using System.Text.Json;
 using System.Threading.RateLimiting;
 using ApiCatalog.Application.Common;
 using Microsoft.AspNetCore.RateLimiting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ApiCatalog.Api.Extensions
 {
     public static class RateLimitingExtensions
     {
-        public static IServiceCollection AddRateLimiterPolicies(this IServiceCollection services)
+        public static void AddRateLimiterPolicies(this IServiceCollection services)
         {
             services.AddRateLimiter(options =>
             {
@@ -63,8 +61,6 @@ namespace ApiCatalog.Api.Extensions
                     });
                 });
             });
-
-            return services;
         }
 
         // Global Rate Limiter
