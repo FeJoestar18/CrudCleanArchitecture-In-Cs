@@ -22,6 +22,8 @@ obj/
 *.app
 *.deps.json
 *.runtimeconfig.json
+[Bb]in/
+[Oo]bj/
 
 ## NuGet
 *.nupkg

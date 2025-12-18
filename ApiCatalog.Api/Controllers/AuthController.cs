@@ -6,6 +6,7 @@ using ApiCatalog.Application.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace ApiCatalog.Api.Controllers;
 
@@ -14,6 +15,7 @@ namespace ApiCatalog.Api.Controllers;
 public class AuthController(AuthService auth) : ControllerBase
 {
     [HttpPost("register")]
+    [EnableRateLimiting("API_Free")] 
     public async Task<IActionResult> Register([FromBody] RegisterDto dto)
     {
         var (success, message) = await auth.RegisterAsync(dto);

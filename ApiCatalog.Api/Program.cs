@@ -16,6 +16,7 @@ builder.Services.AddCorsConfiguration(builder.Configuration);
 builder.Services.AddSmartAuthentication(builder.Configuration);
 builder.Services.AddAuthorization();
 builder.Services.AddCustomAuthorization();
+builder.Services.AddRateLimiterPolicies();
 
 var app = builder.Build();
 
@@ -27,6 +28,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 app.UseCorsConfiguration();
+app.UseRateLimiter();
 
 app.UseAuthentication();
 app.UseAuthorization();

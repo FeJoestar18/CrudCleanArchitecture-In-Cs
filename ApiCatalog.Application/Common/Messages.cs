@@ -59,6 +59,8 @@ public static class Messages
         public const string Success = "Operação realizada com sucesso";
         public const string Failure = "Falha ao realizar a operação";
         public const string InvalidJson = "Corpo JSON inválido ou Content-Type ausente.";
+        public const string VeryRequest = "Muitas requisições. Tente novamente mais tarde.";
+        public const string ErrorCode = "TOO_MANY_REQUESTS";
         
         public static string? InvalidRequest { get; set; }
     }

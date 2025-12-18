@@ -16,6 +16,9 @@ obj/
 *.user
 *.suo
 *.log
+[Bb]in/
+[Oo]bj/
+
 
 ## SourceLink
 *.sourcelink.json
