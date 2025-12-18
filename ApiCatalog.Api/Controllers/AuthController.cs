@@ -18,7 +18,9 @@ public class AuthController(AuthService auth) : ControllerBase
     {
         var (success, message) = await auth.RegisterAsync(dto);
         
-        return !success ? this.BadRequestWithMessage(message ?? Messages.Auth.UserAlreadyExists) : this.CreatedWithMessage<object>(nameof(Me), null, null, message ?? Messages.Auth.UserRegistered);
+        return !success ? this.BadRequestWithMessage(message ?? Messages.Auth.UserAlreadyExists)
+            : this.CreatedWithMessage<object>(nameof(Me), null, null, message
+              ?? Messages.Auth.UserRegistered);
     }
 
     [HttpPost("login")]
@@ -55,7 +57,8 @@ public class AuthController(AuthService auth) : ControllerBase
                 AllowRefresh = true
             });
 
-        return this.OkWithMessage(new { jwt = token }, message ?? Messages.Auth.LoginSuccessful);
+        return this.OkWithMessage(new { jwt = token }, message 
+           ?? Messages.Auth.LoginSuccessful);
     }
 
     [Authorize]

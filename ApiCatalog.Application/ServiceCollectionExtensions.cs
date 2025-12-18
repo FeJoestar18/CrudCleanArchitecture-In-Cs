@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using ApiCatalog.Application.Services;
-using ApiCatalog.Application.Services.InterfaceService;
+using ApiCatalog.Application.Services.Interface;
 using ApiCatalog.Application.Services.Rules;
 
 namespace ApiCatalog.Application;

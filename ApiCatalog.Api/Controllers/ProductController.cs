@@ -25,7 +25,8 @@ public class ProductController(ProductService productService) : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var product = await productService.GetProductByIdAsync(id);
-        return product == null ? this.NotFoundWithMessage(Messages.Products.ProductNotFound) : this.OkWithMessage(product, Messages.JsonResponsesApi.Success);
+        return product == null ? this.NotFoundWithMessage(Messages.Products.ProductNotFound) 
+            : this.OkWithMessage(product, Messages.JsonResponsesApi.Success);
     }
 
     [HttpPost]
@@ -34,7 +35,8 @@ public class ProductController(ProductService productService) : ControllerBase
     {
         var (success, message, product) = await productService.CreateProductAsync(User, dto);
         
-        return !success ? this.BadRequestWithMessage(message) : this.CreatedWithMessage(nameof(GetById), new { id = product!.Id }, product, Messages.Products.ProductCreated);
+        return !success ? this.BadRequestWithMessage(message) : this.CreatedWithMessage(nameof(GetById), 
+            new { id = product!.Id }, product, Messages.Products.ProductCreated);
     }
 
     [HttpPut("{id:int}")]
@@ -49,7 +51,8 @@ public class ProductController(ProductService productService) : ControllerBase
 
         var (success, message) = await productService.UpdateProductAsync(User, id, dto);
     
-        return !success ? this.BadRequestWithMessage(message) : this.NoContentWithMessage(Messages.Products.ProductUpdated);
+        return !success ? this.BadRequestWithMessage(message) 
+            : this.NoContentWithMessage(Messages.Products.ProductUpdated);
     }
     [HttpDelete("{id:int}")]
     [Authorize(Policy = "FuncionarioOrAbove")]
@@ -57,7 +60,8 @@ public class ProductController(ProductService productService) : ControllerBase
     {
         var (success, message) = await productService.DeleteProductAsync(User, id);
         
-        return !success ? this.BadRequestWithMessage(message) : this.OkWithMessage<object?>(null, message);
+        return !success ? this.BadRequestWithMessage(message) 
+            : this.OkWithMessage<object?>(null, message);
     }
 
     [HttpGet("pending-deletion")]
@@ -66,7 +70,8 @@ public class ProductController(ProductService productService) : ControllerBase
     {
         var (success, message, products) = await productService.GetPendingDeletionAsync(User);
         
-        return !success ? this.ForbidWithMessage(message) : this.OkWithMessage(products, message);
+        return !success ? this.ForbidWithMessage(message) 
+            : this.OkWithMessage(products, message);
     }
 
     [HttpPost("{id:int}/approve-deletion")]
@@ -75,7 +80,8 @@ public class ProductController(ProductService productService) : ControllerBase
     {
         var (success, message) = await productService.ApproveDeletionAsync(User, id);
         
-        return !success ? this.BadRequestWithMessage(message) : this.OkWithMessage<object?>(null, message);
+        return !success ? this.BadRequestWithMessage(message)
+            : this.OkWithMessage<object?>(null, message);
     }
 
     [HttpPost("{id:int}/reject-deletion")]
@@ -84,7 +90,8 @@ public class ProductController(ProductService productService) : ControllerBase
     {
         var (success, message) = await productService.RejectDeletionAsync(User, id);
         
-        return !success ? this.BadRequestWithMessage(message) : this.OkWithMessage<object?>(null, message);
+        return !success ? this.BadRequestWithMessage(message)
+            : this.OkWithMessage<object?>(null, message);
     }
 
     [HttpPost("purchase")]
@@ -93,7 +100,8 @@ public class ProductController(ProductService productService) : ControllerBase
     {
         var (success, message, purchase) = await productService.PurchaseProductAsync(User, dto);
         
-        return !success ? this.BadRequestWithMessage(message) : this.OkWithMessage(purchase, message);
+        return !success ? this.BadRequestWithMessage(message) 
+            : this.OkWithMessage(purchase, message);
     }
 
     [HttpGet("my-products")]

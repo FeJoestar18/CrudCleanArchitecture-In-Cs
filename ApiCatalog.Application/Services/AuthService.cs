@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using ApiCatalog.Application.Services.InterfaceService;
+using ApiCatalog.Application.Services.Interface;
 using Microsoft.Extensions.Configuration;
 
 namespace ApiCatalog.Application.Services;

@@ -11,6 +11,6 @@ public class ValidationResult
         Message = message;
     }
     
-    public static ValidationResult Success() => new ValidationResult(true, string.Empty);
-    public static ValidationResult Fail(string message) => new ValidationResult(false, message);
+    public static ValidationResult Success() => new(true, string.Empty);
+    public static ValidationResult Fail(string message) => new(false, message);
 }

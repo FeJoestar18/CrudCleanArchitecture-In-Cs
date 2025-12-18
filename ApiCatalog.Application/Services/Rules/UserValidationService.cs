@@ -1,7 +1,7 @@
 using ApiCatalog.Application.Common;
 using ApiCatalog.Application.DTOs;
 using ApiCatalog.Application.Policies;
-using ApiCatalog.Application.Services.InterfaceService;
+using ApiCatalog.Application.Services.Interface;
 using ApiCatalog.Domain.Interfaces;
 using ApiCatalog.Domain.ValueObjects;
 

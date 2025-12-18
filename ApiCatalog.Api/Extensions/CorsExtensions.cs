@@ -19,8 +19,7 @@ public static class CorsExtensions
                 if (!string.IsNullOrWhiteSpace(allowed))
                 {
                     var origins = allowed
-                        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                        .ToArray();
+                        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
                     builder.WithOrigins(origins)
                         .AllowAnyHeader()
